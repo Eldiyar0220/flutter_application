@@ -1,0 +1,773 @@
+
+# **************************************************************************
+# * ArchitectureGenerator - Simpler FLutter Generator -
+# **************************************************************************
+
+dataSource: false
+
+dataModel: false
+
+dataRepository: false
+
+entityModel: false
+
+domainRepository: false
+
+usecase: false
+
+#!/bin/bash
+# ----M.V.P-------------------------------------------------------> start
+generate:
+# ---Data------------------------------------------------------
+  - category: data
+    contents:
+      - folder: models
+        contents:
+          - file: NAME_model.dart
+            code: |
+              import 'package:freezed_annotation/freezed_annotation.dart';
+
+              part 'LOWER_CASE_model.freezed.dart';
+              part 'LOWER_CASE_model.g.dart';
+
+              @freezed
+              class NAMEModel with _$NAMEModel {
+                const factory NAMEModel({
+                  String? status,
+                  String? data,
+                  String? message,
+                  bool? blocked,
+                  bool? popup,
+                }) = _NAMEModel;
+
+                factory NAMEModel.fromJson(Map<String, dynamic> json) =>
+                    _$NAMEModelFromJson(json);
+              }
+      - folder: repository
+        contents:
+          - file: NAME_repository_impl.dart
+            code: |
+              import 'package:injectable/injectable.dart';
+
+              @Singleton(as: NAMERepository)
+              class NAMERepositoryImpl implements NAMERepository {
+                NAMERepositoryImpl(this._dioGenerator);
+                final DioGenerator _dioGenerator;
+                
+                final String _getList = ' API ';
+
+                @override
+                Future<String> exampleFuncRepo() async {
+                  final response = await _dioGenerator.dio.get(_getList);
+                  return NAMEModel.fromJson(response.data).data;
+                }
+              }
+
+# ---Domain----------------------------------------------------          
+  - category: domain
+    contents:
+      - folder: interactor
+        contents:
+          - file: NAME_interactor.dart
+            code: | 
+              import 'package:injectable/injectable.dart';
+
+              abstract class NAMEInteractor {
+                Future<void> exampleFunc();
+              }
+
+              @Singleton(as: NAMEInteractor)
+              class NAMEInteractorImpl implements NAMEInteractor {
+                NAMEInteractorImpl(this._repository);
+                final NAMERepository _repository;
+
+                @override
+                Future<void> exampleFunc() async {
+                  try {
+                    await _repository.exampleFuncRepo();
+                  } catch (e) {
+                    rethrow;
+                  }
+                }
+              }
+      - folder: repository
+        contents:
+          - file: NAME_repository.dart
+            code: | 
+              abstract class NAMERepository {
+                Future<void> exampleFuncRepo();
+              }
+# ---Presentation----------------------------------------------
+  - category: presentation
+    contents:
+      - folder: widgets
+      - folder: bloc
+        contents:
+          - file: NAME_bloc.dart
+            code: | 
+              import 'package:bloc/bloc.dart';
+              import 'package:freezed_annotation/freezed_annotation.dart';
+
+              part 'LOWER_CASE_bloc.freezed.dart';
+              part 'LOWER_CASE_event.dart';
+              part 'LOWER_CASE_state.dart';
+
+              class NAMEBloc extends Bloc<NAMEEvent, NAMEState> {
+                NAMEBloc(this._interactor) : super(const _Loading()) {
+                  on<NAMEEvent>(_onEvent);
+                }
+
+                final NAMEInteractor _interactor;
+
+                Future<void> _onEvent(
+                  NAMEEvent events,
+                  Emitter<NAMEState> emit,
+                ) {
+                  return events.map(
+                    check: (event) async {
+                      try {
+                        emit(const NAMEState.loading());
+                        // _interactor.
+                        emit(const NAMEState.success());
+                      } catch (e) {
+                        emit(NAMEState.error(e));
+                      }
+                    },
+                  );
+                }
+              }
+
+
+          - file: NAME_bloc.freezed.dart
+            code: |   
+                // coverage:ignore-file
+                // GENERATED CODE - DO NOT MODIFY BY HAND
+                // ignore_for_file: type=lint
+                // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
+
+                part of 'LOWER_CASE_bloc.dart';
+
+                // **************************************************************************
+                // FreezedGenerator
+                // **************************************************************************
+
+                T _$identity<T>(T value) => value;
+
+                final _privateConstructorUsedError = UnsupportedError(
+                    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
+
+                /// @nodoc
+                mixin _$NAMEEvent {
+                  @optionalTypeArgs
+                  TResult when<TResult extends Object?>({
+                    required TResult Function() check,
+                  }) =>
+                      throw _privateConstructorUsedError;
+                  @optionalTypeArgs
+                  TResult? whenOrNull<TResult extends Object?>({
+                    TResult? Function()? check,
+                  }) =>
+                      throw _privateConstructorUsedError;
+                  @optionalTypeArgs
+                  TResult maybeWhen<TResult extends Object?>({
+                    TResult Function()? check,
+                    required TResult orElse(),
+                  }) =>
+                      throw _privateConstructorUsedError;
+                  @optionalTypeArgs
+                  TResult map<TResult extends Object?>({
+                    required TResult Function(_check value) check,
+                  }) =>
+                      throw _privateConstructorUsedError;
+                  @optionalTypeArgs
+                  TResult? mapOrNull<TResult extends Object?>({
+                    TResult? Function(_check value)? check,
+                  }) =>
+                      throw _privateConstructorUsedError;
+                  @optionalTypeArgs
+                  TResult maybeMap<TResult extends Object?>({
+                    TResult Function(_check value)? check,
+                    required TResult orElse(),
+                  }) =>
+                      throw _privateConstructorUsedError;
+                }
+
+                /// @nodoc
+                abstract class $NAMEEventCopyWith<$Res> {
+                  factory $NAMEEventCopyWith(NAMEEvent value, $Res Function(NAMEEvent) then) =
+                      _$NAMEEventCopyWithImpl<$Res, NAMEEvent>;
+                }
+
+                /// @nodoc
+                class _$NAMEEventCopyWithImpl<$Res, $Val extends NAMEEvent>
+                    implements $NAMEEventCopyWith<$Res> {
+                  _$NAMEEventCopyWithImpl(this._value, this._then);
+
+                  // ignore: unused_field
+                  final $Val _value;
+                  // ignore: unused_field
+                  final $Res Function($Val) _then;
+
+                  /// Create a copy of NAMEEvent
+                  /// with the given fields replaced by the non-null parameter values.
+                }
+
+                /// @nodoc
+                abstract class _$$checkImplCopyWith<$Res> {
+                  factory _$$checkImplCopyWith(
+                          _$checkImpl value, $Res Function(_$checkImpl) then) =
+                      __$$checkImplCopyWithImpl<$Res>;
+                }
+
+                /// @nodoc
+                class __$$checkImplCopyWithImpl<$Res>
+                    extends _$NAMEEventCopyWithImpl<$Res, _$checkImpl>
+                    implements _$$checkImplCopyWith<$Res> {
+                  __$$checkImplCopyWithImpl(
+                      _$checkImpl _value, $Res Function(_$checkImpl) _then)
+                      : super(_value, _then);
+
+                  /// Create a copy of NAMEEvent
+                  /// with the given fields replaced by the non-null parameter values.
+                }
+
+                /// @nodoc
+
+                class _$checkImpl implements _check {
+                  const _$checkImpl();
+
+                  @override
+                  String toString() {
+                    return 'NAMEEvent.check()';
+                  }
+
+                  @override
+                  bool operator ==(Object other) {
+                    return identical(this, other) ||
+                        (other.runtimeType == runtimeType && other is _$checkImpl);
+                  }
+
+                  @override
+                  int get hashCode => runtimeType.hashCode;
+
+                  @override
+                  @optionalTypeArgs
+                  TResult when<TResult extends Object?>({
+                    required TResult Function() check,
+                  }) {
+                    return check();
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult? whenOrNull<TResult extends Object?>({
+                    TResult? Function()? check,
+                  }) {
+                    return check?.call();
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult maybeWhen<TResult extends Object?>({
+                    TResult Function()? check,
+                    required TResult orElse(),
+                  }) {
+                    if (check != null) {
+                      return check();
+                    }
+                    return orElse();
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult map<TResult extends Object?>({
+                    required TResult Function(_check value) check,
+                  }) {
+                    return check(this);
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult? mapOrNull<TResult extends Object?>({
+                    TResult? Function(_check value)? check,
+                  }) {
+                    return check?.call(this);
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult maybeMap<TResult extends Object?>({
+                    TResult Function(_check value)? check,
+                    required TResult orElse(),
+                  }) {
+                    if (check != null) {
+                      return check(this);
+                    }
+                    return orElse();
+                  }
+                }
+
+                abstract class _check implements NAMEEvent {
+                  const factory _check() = _$checkImpl;
+                }
+
+                /// @nodoc
+                mixin _$NAMEState {
+                  @optionalTypeArgs
+                  TResult when<TResult extends Object?>({
+                    required TResult Function() loading,
+                    required TResult Function() success,
+                    required TResult Function(dynamic e) error,
+                  }) =>
+                      throw _privateConstructorUsedError;
+                  @optionalTypeArgs
+                  TResult? whenOrNull<TResult extends Object?>({
+                    TResult? Function()? loading,
+                    TResult? Function()? success,
+                    TResult? Function(dynamic e)? error,
+                  }) =>
+                      throw _privateConstructorUsedError;
+                  @optionalTypeArgs
+                  TResult maybeWhen<TResult extends Object?>({
+                    TResult Function()? loading,
+                    TResult Function()? success,
+                    TResult Function(dynamic e)? error,
+                    required TResult orElse(),
+                  }) =>
+                      throw _privateConstructorUsedError;
+                  @optionalTypeArgs
+                  TResult map<TResult extends Object?>({
+                    required TResult Function(_Loading value) loading,
+                    required TResult Function(_Success value) success,
+                    required TResult Function(_Error value) error,
+                  }) =>
+                      throw _privateConstructorUsedError;
+                  @optionalTypeArgs
+                  TResult? mapOrNull<TResult extends Object?>({
+                    TResult? Function(_Loading value)? loading,
+                    TResult? Function(_Success value)? success,
+                    TResult? Function(_Error value)? error,
+                  }) =>
+                      throw _privateConstructorUsedError;
+                  @optionalTypeArgs
+                  TResult maybeMap<TResult extends Object?>({
+                    TResult Function(_Loading value)? loading,
+                    TResult Function(_Success value)? success,
+                    TResult Function(_Error value)? error,
+                    required TResult orElse(),
+                  }) =>
+                      throw _privateConstructorUsedError;
+                }
+
+                /// @nodoc
+                abstract class $NAMEStateCopyWith<$Res> {
+                  factory $NAMEStateCopyWith(NAMEState value, $Res Function(NAMEState) then) =
+                      _$NAMEStateCopyWithImpl<$Res, NAMEState>;
+                }
+
+                /// @nodoc
+                class _$NAMEStateCopyWithImpl<$Res, $Val extends NAMEState>
+                    implements $NAMEStateCopyWith<$Res> {
+                  _$NAMEStateCopyWithImpl(this._value, this._then);
+
+                  // ignore: unused_field
+                  final $Val _value;
+                  // ignore: unused_field
+                  final $Res Function($Val) _then;
+
+                  /// Create a copy of NAMEState
+                  /// with the given fields replaced by the non-null parameter values.
+                }
+
+                /// @nodoc
+                abstract class _$$LoadingImplCopyWith<$Res> {
+                  factory _$$LoadingImplCopyWith(
+                          _$LoadingImpl value, $Res Function(_$LoadingImpl) then) =
+                      __$$LoadingImplCopyWithImpl<$Res>;
+                }
+
+                /// @nodoc
+                class __$$LoadingImplCopyWithImpl<$Res>
+                    extends _$NAMEStateCopyWithImpl<$Res, _$LoadingImpl>
+                    implements _$$LoadingImplCopyWith<$Res> {
+                  __$$LoadingImplCopyWithImpl(
+                      _$LoadingImpl _value, $Res Function(_$LoadingImpl) _then)
+                      : super(_value, _then);
+
+                  /// Create a copy of NAMEState
+                  /// with the given fields replaced by the non-null parameter values.
+                }
+
+                /// @nodoc
+
+                class _$LoadingImpl implements _Loading {
+                  const _$LoadingImpl();
+
+                  @override
+                  String toString() {
+                    return 'NAMEState.loading()';
+                  }
+
+                  @override
+                  bool operator ==(Object other) {
+                    return identical(this, other) ||
+                        (other.runtimeType == runtimeType && other is _$LoadingImpl);
+                  }
+
+                  @override
+                  int get hashCode => runtimeType.hashCode;
+
+                  @override
+                  @optionalTypeArgs
+                  TResult when<TResult extends Object?>({
+                    required TResult Function() loading,
+                    required TResult Function() success,
+                    required TResult Function(dynamic e) error,
+                  }) {
+                    return loading();
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult? whenOrNull<TResult extends Object?>({
+                    TResult? Function()? loading,
+                    TResult? Function()? success,
+                    TResult? Function(dynamic e)? error,
+                  }) {
+                    return loading?.call();
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult maybeWhen<TResult extends Object?>({
+                    TResult Function()? loading,
+                    TResult Function()? success,
+                    TResult Function(dynamic e)? error,
+                    required TResult orElse(),
+                  }) {
+                    if (loading != null) {
+                      return loading();
+                    }
+                    return orElse();
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult map<TResult extends Object?>({
+                    required TResult Function(_Loading value) loading,
+                    required TResult Function(_Success value) success,
+                    required TResult Function(_Error value) error,
+                  }) {
+                    return loading(this);
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult? mapOrNull<TResult extends Object?>({
+                    TResult? Function(_Loading value)? loading,
+                    TResult? Function(_Success value)? success,
+                    TResult? Function(_Error value)? error,
+                  }) {
+                    return loading?.call(this);
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult maybeMap<TResult extends Object?>({
+                    TResult Function(_Loading value)? loading,
+                    TResult Function(_Success value)? success,
+                    TResult Function(_Error value)? error,
+                    required TResult orElse(),
+                  }) {
+                    if (loading != null) {
+                      return loading(this);
+                    }
+                    return orElse();
+                  }
+                }
+
+                abstract class _Loading implements NAMEState {
+                  const factory _Loading() = _$LoadingImpl;
+                }
+
+                /// @nodoc
+                abstract class _$$SuccessImplCopyWith<$Res> {
+                  factory _$$SuccessImplCopyWith(
+                          _$SuccessImpl value, $Res Function(_$SuccessImpl) then) =
+                      __$$SuccessImplCopyWithImpl<$Res>;
+                }
+
+                /// @nodoc
+                class __$$SuccessImplCopyWithImpl<$Res>
+                    extends _$NAMEStateCopyWithImpl<$Res, _$SuccessImpl>
+                    implements _$$SuccessImplCopyWith<$Res> {
+                  __$$SuccessImplCopyWithImpl(
+                      _$SuccessImpl _value, $Res Function(_$SuccessImpl) _then)
+                      : super(_value, _then);
+
+                  /// Create a copy of NAMEState
+                  /// with the given fields replaced by the non-null parameter values.
+                }
+
+                /// @nodoc
+
+                class _$SuccessImpl implements _Success {
+                  const _$SuccessImpl();
+
+                  @override
+                  String toString() {
+                    return 'NAMEState.success()';
+                  }
+
+                  @override
+                  bool operator ==(Object other) {
+                    return identical(this, other) ||
+                        (other.runtimeType == runtimeType && other is _$SuccessImpl);
+                  }
+
+                  @override
+                  int get hashCode => runtimeType.hashCode;
+
+                  @override
+                  @optionalTypeArgs
+                  TResult when<TResult extends Object?>({
+                    required TResult Function() loading,
+                    required TResult Function() success,
+                    required TResult Function(dynamic e) error,
+                  }) {
+                    return success();
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult? whenOrNull<TResult extends Object?>({
+                    TResult? Function()? loading,
+                    TResult? Function()? success,
+                    TResult? Function(dynamic e)? error,
+                  }) {
+                    return success?.call();
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult maybeWhen<TResult extends Object?>({
+                    TResult Function()? loading,
+                    TResult Function()? success,
+                    TResult Function(dynamic e)? error,
+                    required TResult orElse(),
+                  }) {
+                    if (success != null) {
+                      return success();
+                    }
+                    return orElse();
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult map<TResult extends Object?>({
+                    required TResult Function(_Loading value) loading,
+                    required TResult Function(_Success value) success,
+                    required TResult Function(_Error value) error,
+                  }) {
+                    return success(this);
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult? mapOrNull<TResult extends Object?>({
+                    TResult? Function(_Loading value)? loading,
+                    TResult? Function(_Success value)? success,
+                    TResult? Function(_Error value)? error,
+                  }) {
+                    return success?.call(this);
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult maybeMap<TResult extends Object?>({
+                    TResult Function(_Loading value)? loading,
+                    TResult Function(_Success value)? success,
+                    TResult Function(_Error value)? error,
+                    required TResult orElse(),
+                  }) {
+                    if (success != null) {
+                      return success(this);
+                    }
+                    return orElse();
+                  }
+                }
+
+                abstract class _Success implements NAMEState {
+                  const factory _Success() = _$SuccessImpl;
+                }
+
+                /// @nodoc
+                abstract class _$$ErrorImplCopyWith<$Res> {
+                  factory _$$ErrorImplCopyWith(
+                          _$ErrorImpl value, $Res Function(_$ErrorImpl) then) =
+                      __$$ErrorImplCopyWithImpl<$Res>;
+                  @useResult
+                  $Res call({dynamic e});
+                }
+
+                /// @nodoc
+                class __$$ErrorImplCopyWithImpl<$Res>
+                    extends _$NAMEStateCopyWithImpl<$Res, _$ErrorImpl>
+                    implements _$$ErrorImplCopyWith<$Res> {
+                  __$$ErrorImplCopyWithImpl(
+                      _$ErrorImpl _value, $Res Function(_$ErrorImpl) _then)
+                      : super(_value, _then);
+
+                  /// Create a copy of NAMEState
+                  /// with the given fields replaced by the non-null parameter values.
+                  @pragma('vm:prefer-inline')
+                  @override
+                  $Res call({
+                    Object? e = freezed,
+                  }) {
+                    return _then(_$ErrorImpl(
+                      freezed == e
+                          ? _value.e
+                          : e // ignore: cast_nullable_to_non_nullable
+                              as dynamic,
+                    ));
+                  }
+                }
+
+                /// @nodoc
+
+                class _$ErrorImpl implements _Error {
+                  const _$ErrorImpl(this.e);
+
+                  @override
+                  final dynamic e;
+
+                  @override
+                  String toString() {
+                    return 'NAMEState.error(e: $e)';
+                  }
+
+                  @override
+                  bool operator ==(Object other) {
+                    return identical(this, other) ||
+                        (other.runtimeType == runtimeType &&
+                            other is _$ErrorImpl &&
+                            const DeepCollectionEquality().equals(other.e, e));
+                  }
+
+                  @override
+                  int get hashCode =>
+                      Object.hash(runtimeType, const DeepCollectionEquality().hash(e));
+
+                  /// Create a copy of NAMEState
+                  /// with the given fields replaced by the non-null parameter values.
+                  @JsonKey(includeFromJson: false, includeToJson: false)
+                  @override
+                  @pragma('vm:prefer-inline')
+                  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+                      __$$ErrorImplCopyWithImpl<_$ErrorImpl>(this, _$identity);
+
+                  @override
+                  @optionalTypeArgs
+                  TResult when<TResult extends Object?>({
+                    required TResult Function() loading,
+                    required TResult Function() success,
+                    required TResult Function(dynamic e) error,
+                  }) {
+                    return error(e);
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult? whenOrNull<TResult extends Object?>({
+                    TResult? Function()? loading,
+                    TResult? Function()? success,
+                    TResult? Function(dynamic e)? error,
+                  }) {
+                    return error?.call(e);
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult maybeWhen<TResult extends Object?>({
+                    TResult Function()? loading,
+                    TResult Function()? success,
+                    TResult Function(dynamic e)? error,
+                    required TResult orElse(),
+                  }) {
+                    if (error != null) {
+                      return error(e);
+                    }
+                    return orElse();
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult map<TResult extends Object?>({
+                    required TResult Function(_Loading value) loading,
+                    required TResult Function(_Success value) success,
+                    required TResult Function(_Error value) error,
+                  }) {
+                    return error(this);
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult? mapOrNull<TResult extends Object?>({
+                    TResult? Function(_Loading value)? loading,
+                    TResult? Function(_Success value)? success,
+                    TResult? Function(_Error value)? error,
+                  }) {
+                    return error?.call(this);
+                  }
+
+                  @override
+                  @optionalTypeArgs
+                  TResult maybeMap<TResult extends Object?>({
+                    TResult Function(_Loading value)? loading,
+                    TResult Function(_Success value)? success,
+                    TResult Function(_Error value)? error,
+                    required TResult orElse(),
+                  }) {
+                    if (error != null) {
+                      return error(this);
+                    }
+                    return orElse();
+                  }
+                }
+
+                abstract class _Error implements NAMEState {
+                  const factory _Error(final dynamic e) = _$ErrorImpl;
+
+                  dynamic get e;
+
+                  /// Create a copy of NAMEState
+                  /// with the given fields replaced by the non-null parameter values.
+                  @JsonKey(includeFromJson: false, includeToJson: false)
+                  _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>
+                      throw _privateConstructorUsedError;
+                }
+
+          - file: NAME_event.dart
+            code: |   
+              part of 'LOWER_CASE_bloc.dart';
+
+              @freezed
+              class NAMEEvent with _$NAMEEvent {
+                const factory NAMEEvent.check() = _check;
+              }
+          - file: NAME_state.dart
+            code: |
+              part of 'LOWER_CASE_bloc.dart';
+
+              @freezed
+              class NAMEState with _$NAMEState {
+                const factory NAMEState.loading() = _Loading;
+                const factory NAMEState.success() = _Success;
+                const factory NAMEState.error(dynamic e) = _Error;
+              }
+      - folder: pages
+        contents:
+          - file: NAME_page.dart
+# ------------------------------------------------------------- end
+

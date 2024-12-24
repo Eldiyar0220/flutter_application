@@ -1,0 +1,53 @@
+
+
+name: flutter_application_1
+description: "A new Flutter project."
+publish_to: 'none' 
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.4.0 <4.0.0'
+
+
+dependencies:
+  flutter:
+    sdk: flutter
+  bloc: ^8.1.4
+  freezed_annotation: ^2.4.1
+  cupertino_icons: ^1.0.6
+  fade_shimmer: ^2.1.0
+  google_ml_kit: ^0.19.0
+  camera: ^0.11.0+2
+  sms_autofill:
+    git:
+      url: https://github.com/Eldiyar0220/auto_fill_from_sms
+      ref: main
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  build_runner: ^2.4.11
+  freezed: ^2.5.2
+  json_serializable: ^6.8.0
+
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
